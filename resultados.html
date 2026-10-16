@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Resultados · ChipLabUN</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Semillero ChipLabUN · Universidad Nacional de Colombia. IA para diseñar chips · Chips para ejecutar IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="ChipLabUN, inicio">
+      <img src="img/logo.jpg" alt="" width="85" height="42">
+      <span class="sep" aria-hidden="true"></span>
+      <img class="unal" src="img/unal-logo-blanco.png" alt="" width="94" height="40">
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav class="nav" id="nav" aria-label="Principal"><a href="conocenos.html">Conócenos</a><a href="proyectos.html">Proyectos</a><a href="resultados.html" aria-current="page">Resultados</a><a href="personas.html">Personas</a><a href="publicaciones.html">Publicaciones</a><a href="contacto.html">Contáctanos</a></nav>
+  </div>
+</header>
+<main id="contenido">
+<section class="page-head"><div class="wrap">
+  <p class="crumbs"><a href="index.html">Inicio</a> / Resultados</p>
+  <h1>Resultados</h1><p>Medir en silicio es parte del método, no un trámite final.</p></div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Evidencia</span><h2>Figuras</h2><span class="bar"></span></div></div>
+  <div class="results">
+  <figure class="fig-card wide"><img src="img/axint4-vision.jpg" alt="Comparación entre filtro exacto y filtro con el multiplicador Ax-INT4, con mapa de error absoluto, para desenfoque gaussiano y Sobel" width="1143" height="820" loading="lazy">
+    <figcaption><strong>Línea 1.</strong> El multiplicador Ax-INT4 hallado por el agente conserva alta fidelidad visual (PSNR 38,0 dB y SSIM 0,99 en desenfoque gaussiano; 43,9 dB y 0,97 en Sobel) con menor complejidad lógica de productos parciales.</figcaption></figure>
+  <figure class="fig-card wide"><img src="img/brUNo-mariposa.jpg" alt="Imagen RGB de entrada, salida en escala de grises y mapa de bordes Sobel generados por el chip brUNo" width="1479" height="415" loading="lazy">
+    <figcaption><strong>Línea 2.</strong> Validación post-silicio: imagen RGB de 320 × 240 transmitida al ASIC, salida en escala de grises y mapa de bordes Sobel generados por el chip.</figcaption></figure>
+  <figure class="fig-card"><img src="img/brUNo-die.jpg" alt="Die de TinyTapeout y detalle del bloque brUNo" width="739" height="559" loading="lazy">
+    <figcaption><strong>Chip brUNo.</strong> Die de TinyTapeout (3,6 × 5,2 mm) y detalle del bloque implementado (0,226 × 0,161 mm).</figcaption></figure>
+  <div class="fig-card" style="justify-content:center"><div class="kv">
+  <div class="chip"><b>0,036 mm²</b><span>área en Sky130 · 2.183 celdas · 2 tiles</span></div>
+  <div class="chip"><b>2,91 mW</b><span>potencia total medida a 1,8 V</span></div>
+  <div class="chip"><b>SSIM 0,983</b><span>fidelidad de la conversión a grises aproximada</span></div>
+  <div class="chip"><b>100 % / 42 %</b><span>coincidencia en grises / discrepancia en Sobel</span></div></div></div>
+</div>
+</div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Conclusiones</span><h2>Lo que aprendimos</h2><span class="bar"></span></div></div>
+  <div class="lessons">
+  <div class="lesson"><h4>Capacidad instalada</h4><p>Entorno de RL propio en GPU, flujo RTL-a-GDSII sobre Sky130 y banco de pruebas post-silicio en la UNAL.</p></div>
+  <div class="lesson"><h4>El silicio corrige al modelo</h4><p>La etapa Sobel de brUNo presentó 42,01 % de discrepancia que la verificación RTL no detectó.</p></div>
+  <div class="lesson"><h4>Potencia medida, no estimada</h4><p>El reloj representa cerca del 27,8 % de la potencia dinámica, y la fuga medida supera la estimada por OpenLane.</p></div>
+</div>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <img class="foot-unal" src="img/unal-logo-blanco.png" alt="Universidad Nacional de Colombia" width="151" height="64" loading="lazy">
+      <h4>Semillero ChipLabUN</h4>
+      <p style="font-size:15px;max-width:44ch">Investigación en diseño de circuitos integrados. IA para diseñar chips · Chips para ejecutar IA. Departamento de Ingeniería Eléctrica y Electrónica, Sede Bogotá.</p>
+    </div>
+    <div>
+      <h4>Explorar</h4>
+      <ul><li><a href="conocenos.html">Conócenos</a></li><li><a href="proyectos.html">Proyectos</a></li><li><a href="personas.html">Personas</a></li><li><a href="publicaciones.html">Publicaciones</a></li></ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul><li>jseslavag@unal.edu.co</li><li>rruedam@unal.edu.co</li><li><a href="https://github.com/DarkSpartan345" target="_blank" rel="noopener">GitHub · DarkSpartan345</a></li></ul>
+    </div>
+    <div class="legal"><span>© 2026 ChipLabUN · Universidad Nacional de Colombia</span><span>Herramientas abiertas: Sky130 · OpenLane · TinyTapeout</span></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>

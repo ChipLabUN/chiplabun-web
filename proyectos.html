@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proyectos · ChipLabUN</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Semillero ChipLabUN · Universidad Nacional de Colombia. IA para diseñar chips · Chips para ejecutar IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="ChipLabUN, inicio">
+      <img src="img/logo.jpg" alt="" width="85" height="42">
+      <span class="sep" aria-hidden="true"></span>
+      <img class="unal" src="img/unal-logo-blanco.png" alt="" width="94" height="40">
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav class="nav" id="nav" aria-label="Principal"><a href="conocenos.html">Conócenos</a><a href="proyectos.html" aria-current="page">Proyectos</a><a href="resultados.html">Resultados</a><a href="personas.html">Personas</a><a href="publicaciones.html">Publicaciones</a><a href="contacto.html">Contáctanos</a></nav>
+  </div>
+</header>
+<main id="contenido">
+<section class="page-head"><div class="wrap">
+  <p class="crumbs"><a href="index.html">Inicio</a> / Proyectos</p>
+  <h1>Proyectos</h1><p>Las dos líneas de investigación y los proyectos activos de cada una, con sus resultados principales.</p></div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Investigación</span><h2>Líneas de investigación</h2><span class="bar"></span></div></div>
+  <div class="lines">
+  <article class="line" id="linea-1"><header><h3>Línea 1 · IA para diseñar chips</h3><code>IA → CHIPS</code></header><div class="body"><p>El espacio de diseño de un multiplicador crece de forma combinatoria con el ancho de operando. Modelamos el diseño como un problema de decisión secuencial: un agente tabular coloca términos booleanos sobre la grilla de productos parciales, sin reglas de multiplicación predefinidas, y descubre multiplicadores aproximados fuera de las plantillas clásicas (array, Booth, Dadda, Wallace).</p><div class="flow" aria-label="Flujo de la línea 1"><span>Agente tabular</span><i>→</i><span>Entorno CUDA ×512</span><i>→</i><span>Verilog</span><i>→</i><span>Yosys · OpenROAD</span><i>→</i><span>PPA Sky130</span></div><div class="kv">
+  <div class="chip"><b>&lt; 5 %</b><span>error de peor caso a 4 bits (SARSA de 30 pasos)</span></div>
+  <div class="chip"><b>0,0039</b><span>NMAE del mejor multiplicador de 4 bits</span></div>
+  <div class="chip"><b>50 M</b><span>episodios sobre 512 entornos paralelos en GPU</span></div>
+  <div class="chip"><b>2 → 8 bits</b><span>escalamiento por composición recursiva</span></div></div></div></article>
+  <article class="line" id="linea-2"><header><h3>Línea 2 · Chips que ejecutan IA</h3><code>CHIPS → IA</code></header><div class="body"><p>Muchas tareas de visión parten de un sensor que entrega un flujo continuo de píxeles y repiten la misma operación sobre cada uno. Diseñamos, implementamos, fabricamos y medimos ASIC de código abierto que ejecutan ese front-end en silicio: escala de grises y detección de bordes Sobel, solo con sumas, restas y desplazamientos.</p><div class="flow" aria-label="Flujo de la línea 2"><span>SystemVerilog</span><i>→</i><span>Yosys</span><i>→</i><span>OpenLane 2</span><i>→</i><span>DRC/LVS</span><i>→</i><span>TinyTapeout</span><i>→</i><span>Medición</span></div><div class="kv">
+  <div class="chip"><b>0,036 mm²</b><span>área en Sky130 · 2.183 celdas · 2 tiles</span></div>
+  <div class="chip"><b>2,91 mW</b><span>potencia total medida a 1,8 V</span></div>
+  <div class="chip"><b>SSIM 0,983</b><span>fidelidad de la conversión a grises aproximada</span></div>
+  <div class="chip"><b>100 % / 42 %</b><span>coincidencia en grises / discrepancia en Sobel</span></div></div></div></article>
+</div>
+</div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Portafolio</span><h2>Catálogo de proyectos</h2><span class="bar"></span></div><div class="filters" role="group" aria-label="Filtrar proyectos por línea">
+  <button type="button" data-f="all" aria-pressed="true">Todos</button>
+  <button type="button" data-f="l1" aria-pressed="false">Línea 1</button>
+  <button type="button" data-f="l2" aria-pressed="false">Línea 2</button></div></div>
+  <div class="grid3" id="projGrid"><article class="proj" data-l="l1"><div class="meta"><span class="pill l1">Línea 1</span><span class="pill ok">Activo</span></div><h3>Entorno RL sin simulación</h3><p>Grilla de productos parciales como entorno de aprendizaje, vectorizado en CUDA con 512 instancias en paralelo. Agentes Monte Carlo, Q-learning, SARSA y SARSA de n pasos con recompensa por columna y por error final.</p><div class="fig">Multiplicadores de 2 bits con <b>error cero</b>; a 4 bits, error pico <b>4</b> frente a 64 de los métodos de un paso.</div></article><article class="proj" data-l="l1"><div class="meta"><span class="pill l1">Línea 1</span><span class="pill ok">Activo</span></div><h3>Exploración multiagente</h3><p>Cinco esquemas de cooperación entre agentes (IND, COOP, CN, CA y CAN) para paralelizar la exploración del espacio de diseño de multiplicadores.</p><div class="fig">La cooperación total logra <b>el menor error</b>; la cooperación por ventaja, <b>la convergencia más rápida</b>.</div></article><article class="proj" data-l="l1"><div class="meta"><span class="pill l1">Línea 1</span><span class="pill ok">Activo</span></div><h3>Escalamiento a 8 bits</h3><p>Composición recursiva 2 → 4 → 8 bits a partir de bloques descubiertos por el agente, donde los métodos tabulares saturan desde los 6 bits.</p><div class="fig">Corregir 1–2 operaciones por bloque baja el MAE de <b>3.612</b> a 2.709 y <b>1.543</b> (producto máx. 65.025).</div></article><article class="proj" data-l="l1 l2"><div class="meta"><span class="pill l1">Línea 1</span><span class="pill l2">Línea 2</span><span class="pill ok">Activo</span></div><h3>Ax-INT4 en visión</h3><p>El multiplicador aproximado de 4 bits hallado por el agente, traducido a Verilog, sintetizado con LibreLane y evaluado en filtros de imagen frente a UDM, BAM y DRUM.</p><div class="fig">Desenfoque gaussiano 5×5: <b>PSNR 38,0 dB</b> · SSIM 0,99. Sobel 3×3: <b>43,9 dB</b> · 0,97.</div></article><article class="proj" data-l="l2"><div class="meta"><span class="pill l2">Línea 2</span><span class="pill">Fabricado</span></div><h3>brUNo · ASIC grises + Sobel</h3><p>Arquitectura streaming de dos etapas para imágenes RGB de 320 × 240 recibidas por SPI, con LFSR de estímulo y lógica de selección de modo integradas para prueba.</p><div class="fig">Grises: <b>F1 de bordes 0,953</b> · IoU 0,910 frente a la referencia ideal.</div></article><article class="proj" data-l="l2"><div class="meta"><span class="pill l2">Línea 2</span><span class="pill ok">Activo</span></div><h3>Banco de pruebas post-silicio</h3><p>Medición de función, potencia y throughput del chip real para contrastar las estimaciones del EDA abierto y depurar fallos que la simulación RTL no captura.</p><div class="fig">La fuga medida <b>supera la estimada</b>: OpenLane no modela las celdas header de power-gating.</div></article></div>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <img class="foot-unal" src="img/unal-logo-blanco.png" alt="Universidad Nacional de Colombia" width="151" height="64" loading="lazy">
+      <h4>Semillero ChipLabUN</h4>
+      <p style="font-size:15px;max-width:44ch">Investigación en diseño de circuitos integrados. IA para diseñar chips · Chips para ejecutar IA. Departamento de Ingeniería Eléctrica y Electrónica, Sede Bogotá.</p>
+    </div>
+    <div>
+      <h4>Explorar</h4>
+      <ul><li><a href="conocenos.html">Conócenos</a></li><li><a href="proyectos.html">Proyectos</a></li><li><a href="personas.html">Personas</a></li><li><a href="publicaciones.html">Publicaciones</a></li></ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul><li>jseslavag@unal.edu.co</li><li>rruedam@unal.edu.co</li><li><a href="https://github.com/DarkSpartan345" target="_blank" rel="noopener">GitHub · DarkSpartan345</a></li></ul>
+    </div>
+    <div class="legal"><span>© 2026 ChipLabUN · Universidad Nacional de Colombia</span><span>Herramientas abiertas: Sky130 · OpenLane · TinyTapeout</span></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>

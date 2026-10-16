@@ -1,0 +1,12 @@
+Fotos de los integrantes (JPG, idealmente 800x1000 px, proporción 4:5).
+Nombra cada archivo exactamente así y la página la mostrará sola:
+
+  johan-eslava.jpg      Johan Sebastián Eslava Garzón (director)
+  ronny-rueda.jpg       Ronny Alberto Rueda Méndez
+  juan-caviedes.jpg     Juan Sebastián Caviedes Bernal
+  miguel-alvarado.jpg   Miguel Ángel Alvarado Senejoa
+  juan-rodriguez.jpg    Juan David Rodríguez Hernández
+  diana-maldonado.jpg   Diana Maldonado
+  kevin-patino.jpg      Kevin Patiño
+
+Si falta una foto, se muestran las iniciales.

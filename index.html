@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChipLabUN</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Semillero ChipLabUN · Universidad Nacional de Colombia. IA para diseñar chips · Chips para ejecutar IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="ChipLabUN, inicio">
+      <img src="img/logo.jpg" alt="" width="85" height="42">
+      <span class="sep" aria-hidden="true"></span>
+      <img class="unal" src="img/unal-logo-blanco.png" alt="" width="94" height="40">
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav class="nav" id="nav" aria-label="Principal"><a href="conocenos.html">Conócenos</a><a href="proyectos.html">Proyectos</a><a href="resultados.html">Resultados</a><a href="personas.html">Personas</a><a href="publicaciones.html">Publicaciones</a><a href="contacto.html">Contáctanos</a></nav>
+  </div>
+</header>
+<main id="contenido">
+<section class="hero" id="inicio"><div class="wrap">
+  <div>
+    <span class="eyebrow">Semillero de investigación · Diseño de circuitos integrados</span>
+    <h1>Semillero ChipLabUN</h1>
+    <p class="tag">IA para diseñar chips · Chips para ejecutar IA</p>
+    <p class="lead">Somos el semillero del <strong>Departamento de Ingeniería Eléctrica y Electrónica</strong> de la Universidad Nacional de Colombia, Sede Bogotá. Usamos aprendizaje por refuerzo para descubrir aritmética digital y llevamos funciones de visión por computador al silicio con herramientas de código abierto, del RTL al chip medido.</p>
+    <div class="btns"><a class="btn primary" href="conocenos.html">Conoce el semillero</a><a class="btn ghost" href="proyectos.html">Ver proyectos</a></div>
+  </div>
+  <figure class="die">
+    <img src="img/brUNo-die.jpg" alt="Fotografía del die de TinyTapeout de 3,6 por 5,2 mm y detalle del bloque brUNo de 0,226 por 0,161 mm" width="739" height="559">
+    <figcaption>Chip brUNo · die TinyTapeout 3,6 × 5,2 mm · bloque 0,226 × 0,161 mm · Sky130</figcaption>
+  </figure>
+</div><div class="wrap stats-wrap"><div class="stats">
+  <div><b>4</b><span>artículos en 2026</span></div>
+  <div><b>1</b><span>ASIC fabricado y medido</span></div>
+  <div><b>2</b><span>líneas de investigación</span></div>
+  <div><b>7</b><span>integrantes</span></div>
+</div></div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Investigación</span><h2>Líneas de investigación</h2><span class="bar"></span></div><p>Dos ejes que se alimentan entre sí: la aritmética que descubre la Línea 1 es el próximo bloque de los aceleradores de la Línea 2.</p></div>
+  <div class="lines">
+  <article class="line" id="linea-1"><header><h3>Línea 1 · IA para diseñar chips</h3><code>IA → CHIPS</code></header><div class="body"><p>Aprendizaje por refuerzo que explora automáticamente el espacio de diseño de la aritmética digital y descubre multiplicadores aproximados fuera de las plantillas clásicas.</p><a class="more line-link" href="proyectos.html#l1">Ver proyectos de la Línea 1 →</a></div></article>
+  <article class="line" id="linea-2"><header><h3>Línea 2 · Chips que ejecutan IA</h3><code>CHIPS → IA</code></header><div class="body"><p>Diseño, implementación, fabricación y medición de ASIC de código abierto que ejecutan en silicio el front-end de visión por computador: escala de grises y detección de bordes Sobel.</p><a class="more line-link" href="proyectos.html#l2">Ver proyectos de la Línea 2 →</a></div></article>
+</div>
+</div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Portafolio</span><h2>Proyectos destacados</h2><span class="bar"></span></div><a class="more" href="proyectos.html">Catálogo completo →</a></div>
+  <div class="grid3"><article class="proj" data-l="l1"><div class="meta"><span class="pill l1">Línea 1</span><span class="pill ok">Activo</span></div><h3>Entorno RL sin simulación</h3><p>Grilla de productos parciales como entorno de aprendizaje, vectorizado en CUDA con 512 instancias en paralelo. Agentes Monte Carlo, Q-learning, SARSA y SARSA de n pasos con recompensa por columna y por error final.</p><div class="fig">Multiplicadores de 2 bits con <b>error cero</b>; a 4 bits, error pico <b>4</b> frente a 64 de los métodos de un paso.</div></article><article class="proj" data-l="l1 l2"><div class="meta"><span class="pill l1">Línea 1</span><span class="pill l2">Línea 2</span><span class="pill ok">Activo</span></div><h3>Ax-INT4 en visión</h3><p>El multiplicador aproximado de 4 bits hallado por el agente, traducido a Verilog, sintetizado con LibreLane y evaluado en filtros de imagen frente a UDM, BAM y DRUM.</p><div class="fig">Desenfoque gaussiano 5×5: <b>PSNR 38,0 dB</b> · SSIM 0,99. Sobel 3×3: <b>43,9 dB</b> · 0,97.</div></article><article class="proj" data-l="l2"><div class="meta"><span class="pill l2">Línea 2</span><span class="pill">Fabricado</span></div><h3>brUNo · ASIC grises + Sobel</h3><p>Arquitectura streaming de dos etapas para imágenes RGB de 320 × 240 recibidas por SPI, con LFSR de estímulo y lógica de selección de modo integradas para prueba.</p><div class="fig">Grises: <b>F1 de bordes 0,953</b> · IoU 0,910 frente a la referencia ideal.</div></article></div>
+</div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Equipo</span><h2>Personas</h2><span class="bar"></span></div></div>
+  <div class="director-feature team-teaser">
+  <div class="faces"><div class="photo  "><span class="ini" aria-hidden="true">JE</span><img src="img/personas/johan-eslava.jpg" alt="Foto de Johan Sebastián Eslava Garzón" loading="lazy"></div><div class="photo l1 "><span class="ini" aria-hidden="true">RR</span><img src="img/personas/ronny-rueda.jpg" alt="Foto de Ronny Alberto Rueda Méndez" loading="lazy"></div><div class="photo l1 "><span class="ini" aria-hidden="true">JC</span><img src="img/personas/juan-caviedes.jpg" alt="Foto de Juan Sebastián Caviedes Bernal" loading="lazy"></div><div class="photo l1 "><span class="ini" aria-hidden="true">MA</span><img src="img/personas/miguel-alvarado.jpg" alt="Foto de Miguel Ángel Alvarado Senejoa" loading="lazy"></div><div class="photo l1 "><span class="ini" aria-hidden="true">JR</span><img src="img/personas/juan-rodriguez.jpg" alt="Foto de Juan David Rodríguez Hernández" loading="lazy"></div><div class="photo  "><span class="ini" aria-hidden="true">DM</span><img src="img/personas/diana-maldonado.jpg" alt="Foto de Diana Maldonado" loading="lazy"></div><div class="photo  "><span class="ini" aria-hidden="true">KP</span><img src="img/personas/kevin-patino.jpg" alt="Foto de Kevin Patiño" loading="lazy"></div></div>
+  <div><p style="color:var(--ink)">Un director y seis investigadores de pregrado y posgrado trabajando entre el aprendizaje por refuerzo y el silicio.</p>
+  <a class="more" href="personas.html">Conoce al equipo →</a></div></div>
+</div></section><section class="block"><div class="wrap">
+  <div class="sec-head"><div><span class="eyebrow">Actualidad</span><h2>Hitos del semillero</h2><span class="bar"></span></div></div>
+  <div class="timeline">
+  <article class="ms"><time>2026 · OPEN DAY</time><h3>Open Day de Posgrados</h3><p>Presentamos las dos líneas del semillero y abrimos cupos para tesis de maestría y doctorado.</p><a href="contacto.html">Postúlate →</a></article>
+  <article class="ms"><time>2026 · IEEE LASCAS</time><h3>brUNo en el 17th IEEE LASCAS</h3><p>Diseño, implementación y verificación post-silicio del ASIC de escala de grises y Sobel.</p><a href="publicaciones.html">Ver artículo →</a></article>
+  <article class="ms"><time>2026 · ISCMI</time><h3>RL para multiplicadores en ISCMI</h3><p>Exploración del espacio de diseño de multiplicadores digitales potenciada con aprendizaje por refuerzo.</p><a href="publicaciones.html">Ver artículo →</a></article>
+</div>
+</div></section><section class="block"><div class="wrap"><div class="cta">
+  <div><span class="eyebrow" style="color:#e3a07a">Posgrado</span>
+    <h2>¿Quieres hacer tu posgrado diseñando chips?</h2>
+    <p>En ChipLabUN puedes desarrollar tu tesis de maestría o doctorado en exploración de espacios de diseño con aprendizaje por refuerzo, aritmética aproximada, flujos de EDA abiertos y diseño físico de ASIC en Sky130.</p></div>
+  <div class="contact">
+    <div><code>jseslavag@unal.edu.co</code><button type="button" data-copy="jseslavag@unal.edu.co">Copiar</button></div>
+    <div><code>rruedam@unal.edu.co</code><button type="button" data-copy="rruedam@unal.edu.co">Copiar</button></div>
+    <small>Departamento de Ingeniería Eléctrica y Electrónica · Facultad de Ingeniería · Sede Bogotá</small>
+  </div></div></div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <img class="foot-unal" src="img/unal-logo-blanco.png" alt="Universidad Nacional de Colombia" width="151" height="64" loading="lazy">
+      <h4>Semillero ChipLabUN</h4>
+      <p style="font-size:15px;max-width:44ch">Investigación en diseño de circuitos integrados. IA para diseñar chips · Chips para ejecutar IA. Departamento de Ingeniería Eléctrica y Electrónica, Sede Bogotá.</p>
+    </div>
+    <div>
+      <h4>Explorar</h4>
+      <ul><li><a href="conocenos.html">Conócenos</a></li><li><a href="proyectos.html">Proyectos</a></li><li><a href="personas.html">Personas</a></li><li><a href="publicaciones.html">Publicaciones</a></li></ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul><li>jseslavag@unal.edu.co</li><li>rruedam@unal.edu.co</li><li><a href="https://github.com/DarkSpartan345" target="_blank" rel="noopener">GitHub · DarkSpartan345</a></li></ul>
+    </div>
+    <div class="legal"><span>© 2026 ChipLabUN · Universidad Nacional de Colombia</span><span>Herramientas abiertas: Sky130 · OpenLane · TinyTapeout</span></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
