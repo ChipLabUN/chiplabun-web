@@ -1,0 +1,77 @@
+[
+ {
+  "doi": "10.1109/lascas67804.2026.11457090",
+  "titulo": "Design, Implementation and Verification of an Open-Source ASIC for Grayscale and Sobel Edge Detection",
+  "autores": [
+   [
+    "Diana N. Maldonado",
+    "R."
+   ],
+   [
+    "Sebastián Eslava",
+    "G."
+   ],
+   [
+    "Kevin D.",
+    "Patino-Sosa"
+   ]
+  ],
+  "venue": "2026 IEEE 17th Latin America Symposium on Circuits and System (LASCAS)",
+  "fecha": [
+   2026,
+   2,
+   24
+  ],
+  "url": "https://ieeexplore.ieee.org/document/11457090/"
+ },
+ {
+  "doi": "10.1109/lascas67804.2026.11457146",
+  "titulo": "Strategies for Scaling Up RL-Based Multiplier Architectures to Higher Bit-Widths",
+  "autores": [
+   [
+    "Ronny Alberto Rueda",
+    "Méndez"
+   ],
+   [
+    "Juan Sebastián Caviedes",
+    "Bernal"
+   ],
+   [
+    "Johan Sebastián Eslava",
+    "Garzón"
+   ]
+  ],
+  "venue": "2026 IEEE 17th Latin America Symposium on Circuits and System (LASCAS)",
+  "fecha": [
+   2026,
+   2,
+   24
+  ],
+  "url": "https://ieeexplore.ieee.org/document/11457146/"
+ },
+ {
+  "doi": "10.1109/iscmi67495.2025.11358612",
+  "titulo": "Reinforcement Learning-Enhanced Design Space Exploration for Digital Multipliers",
+  "autores": [
+   [
+    "Ronny Alberto",
+    "Rueda Méndez"
+   ],
+   [
+    "Juan",
+    "Sebastián Caviedes Bernal"
+   ],
+   [
+    "Johan Sebastián",
+    "Eslava Garzón"
+   ]
+  ],
+  "venue": "2025 12th International Conference on Soft Computing & Machine Intelligence (ISCMI)",
+  "fecha": [
+   2025,
+   11,
+   21
+  ],
+  "url": "https://ieeexplore.ieee.org/document/11358612/"
+ }
+]

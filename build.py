@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Genera las páginas de site/ con encabezado y pie compartidos.
-Uso: python3 build.py   (edita el contenido aquí y vuelve a correrlo)"""
-import os, html
+Uso: python3 build.py   (edita el contenido aquí y vuelve a correrlo)
+Publicaciones: python3 publicaciones.py   (actualiza data/publicaciones.json desde ORCID y Crossref)"""
+import os, html, json, unicodedata
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 # Si build.py está junto a index.html (repositorio), escribe ahí; si no, en ./site
@@ -20,39 +21,33 @@ NAV = [
 # ---------------- datos ----------------
 DIRECTOR = dict(slug="johan-eslava", ini="JE", name="Johan Sebastián Eslava Garzón",
                 title="Ph.D., M.Sc. · Director del semillero",
-                mail="jseslavag@unal.edu.co")
+                mail="jseslavag@unal.edu.co", cita="J. S. Eslava", orcid="0000-0003-4459-2565")
+# cita: cómo aparece en la lista de autores; orcid: de ahí publicaciones.py toma los DOI
 MEMBERS = [
     dict(slug="ronny-rueda", ini="RR", name="Ronny Alberto Rueda Méndez", line="l1",
-         role="Exploración de multiplicadores con RL", mail="rruedam@unal.edu.co"),
+         role="Exploración de multiplicadores con RL", mail="rruedam@unal.edu.co",
+         cita="R. A. Rueda", orcid="0009-0002-2602-2067"),
     dict(slug="juan-caviedes", ini="JC", name="Juan Sebastián Caviedes Bernal", line="l1",
-         role="Exploración multiagente y escalamiento", mail="jcaviedesb@unal.edu.co", pos="75% center"),
+         role="Exploración multiagente y escalamiento", mail="jcaviedesb@unal.edu.co", pos="75% center",
+         cita="J. S. Caviedes"),
     dict(slug="miguel-alvarado", ini="MA", name="Miguel Ángel Alvarado Senejoa", line="l1",
-         role="Línea 1", mail="mialvarados@unal.edu.co"),
+         role="Línea 1", mail="mialvarados@unal.edu.co", cita="M. A. Alvarado"),
     dict(slug="juan-rodriguez", ini="JR", name="Juan David Rodríguez Hernández", line="l1",
-         role="Línea 1", mail="juarodriguezhe@unal.edu.co"),
+         role="Línea 1", mail="juarodriguezhe@unal.edu.co", cita="J. D. Rodríguez"),
     dict(slug="diana-maldonado", ini="DM", name="Diana Maldonado", line="l2",
-         role="Diseño y verificación del ASIC brUNo", mail=""),
+         role="Diseño y verificación del ASIC brUNo", mail="", cita="D. Maldonado"),
     dict(slug="kevin-patino", ini="KP", name="Kevin Patiño", line="l2",
-         role="Verificación e implementación física", mail=""),
+         role="Verificación e implementación física", mail="", cita="K. Patiño"),
 ]
 
-PUBS = [
-    dict(l="l2", yr="2026",
-         t="Design, Implementation and Verification of an Open-Source ASIC for Grayscale and Sobel Edge Detection",
-         au="D. Maldonado, J. S. Eslava y K. Patiño",
-         v="17th IEEE Latin American Symposium on Circuits and Systems (LASCAS)"),
-    dict(l="l1", yr="2026",
-         t="Strategies for Scaling Up RL-Based Multiplier Architectures to Higher Bit-widths",
-         au="<u>R. A. Rueda</u>, J. S. Caviedes y J. S. Eslava", v="IEEE"),
-    dict(l="l1", yr="2026",
-         t="Reinforcement Learning-Enhanced Design Space Exploration for Digital Multipliers",
-         au="<u>R. A. Rueda</u>, J. S. Caviedes y J. S. Eslava",
-         v="International Conference on Soft Computing &amp; Machine Intelligence (ISCMI)"),
-    dict(l="l1", yr="2026",
-         t="Automated Design Space Exploration of Approximate Digital Multipliers Using Tabular Reinforcement Learning",
-         au="<u>R. A. Rueda</u>, J. S. Eslava, M. A. Alvarado y J. D. Rodríguez",
-         v="Universidad Nacional de Colombia"),
+# Publicaciones con DOI: data/publicaciones.json (lo genera publicaciones.py desde ORCID + Crossref).
+# Aquí solo las que no tienen DOI; autores por su "cita".
+PUBS_EXTRA = [
+    dict(titulo="Automated Design Space Exploration of Approximate Digital Multipliers Using Tabular Reinforcement Learning",
+         autores=["R. A. Rueda", "J. S. Eslava", "M. A. Alvarado", "J. D. Rodríguez"],
+         venue="Universidad Nacional de Colombia", fecha=[2026, 0, 0]),
 ]
+LINEA_POR_DOI = {}  # forzar la línea de un DOI ("l1", "l2" o "l1 l2"); si no, se deduce de los autores
 
 PROJECTS = [
     dict(l="l1", st="Activo", t="Entorno RL sin simulación",
@@ -93,10 +88,60 @@ def project_card(p):
     return (f'<article class="proj" data-l="{p["l"]}"><div class="meta">{pills(p["l"])}{st}</div>'
             f'<h3>{p["t"]}</h3><p>{p["d"]}</p><div class="fig">{p["f"]}</div></article>')
 
+def _norm(s):
+    s = unicodedata.normalize("NFKD", s.lower())
+    return "".join(c for c in s if not unicodedata.combining(c)).replace("-", " ").replace(".", " ").split()
+
+def autor(given, family):
+    """Autor de Crossref → integrante (por apellido + una inicial) o, si no es del semillero, "iniciales apellido"."""
+    full = _norm(f"{given} {family}")
+    for p in [DIRECTOR] + MEMBERS:
+        c = _norm(p["cita"])
+        resto = [w for w in full if w != c[-1]]
+        if c[-1] in full and any(w[0] == i for i in c[:-1] for w in resto):
+            return p
+    ini = " ".join(w[0] + "." for w in given.replace(".", " ").split())
+    return f"{ini} {family}".strip()
+
+def load_pubs():
+    try:
+        with open(os.path.join(_HERE, "data", "publicaciones.json")) as f:
+            con_doi = json.load(f)
+    except FileNotFoundError:
+        print("Aviso: falta data/publicaciones.json (corre python3 publicaciones.py)")
+        con_doi = []
+    pubs = []
+    for w in con_doi:
+        aut = [autor(g, f) for g, f in w["autores"]]
+        lines = {a["line"] for a in aut if isinstance(a, dict) and a.get("line")}
+        pubs.append(dict(w, autores=[a["cita"] if isinstance(a, dict) else a for a in aut],
+                         l=LINEA_POR_DOI.get(w["doi"]) or " ".join(sorted(lines)) or "l1 l2"))
+    for w in PUBS_EXTRA:
+        lines = {p["line"] for p in MEMBERS if p["cita"] in w["autores"]}
+        pubs.append(dict(w, l=" ".join(sorted(lines)) or "l1 l2"))
+    return sorted(pubs, key=lambda w: w["fecha"], reverse=True)
+
+def pub_id(doi):
+    return "pub-" + doi.rsplit(".", 1)[-1]
+
 def pub_item(p):
-    return (f'<article class="pub" data-l="{p["l"]}"><span class="yr">{p["yr"]}</span><div>'
-            f'<h3>{p["t"]}</h3><p class="au">{p["au"]}</p><p class="venue">{p["v"]}</p></div>'
+    a = p["autores"]
+    au = html.escape(", ".join(a[:-1]) + " y " + a[-1] if len(a) > 1 else "".join(a))
+    t, doi, pid = html.escape(p["titulo"]), "", ""
+    if p.get("doi"):
+        t = f'<a href="{p["url"]}" target="_blank" rel="noopener">{t}</a>'
+        doi = f'<p class="doi"><a href="https://doi.org/{p["doi"]}" target="_blank" rel="noopener">DOI {p["doi"]}</a></p>'
+        pid = f' id="{pub_id(p["doi"])}"'
+    return (f'<article class="pub"{pid} data-l="{p["l"]}"><span class="yr">{p["fecha"][0]}</span><div>'
+            f'<h3>{t}</h3><p class="au">{au}</p><p class="venue">{html.escape(p["venue"])}</p>{doi}</div>'
             f'<div class="side">{pills(p["l"])}</div></article>')
+
+def mail(addr):
+    return f'<a class="mail" href="mailto:{addr}">{addr}</a>' if addr else ""
+
+def orcid(p):
+    return (f'<a class="mail" href="https://orcid.org/{p["orcid"]}" target="_blank" rel="noopener">ORCID {p["orcid"]}</a>'
+            if p.get("orcid") else "")
 
 def header(cur):
     cur_attr = ' aria-current="page"'
@@ -125,11 +170,11 @@ FOOTER = '''<footer>
     </div>
     <div>
       <h4>Explorar</h4>
-      <ul><li><a href="conocenos.html">Conócenos</a></li><li><a href="proyectos.html">Proyectos</a></li><li><a href="personas.html">Personas</a></li><li><a href="publicaciones.html">Publicaciones</a></li></ul>
+      <ul><li><a href="conocenos.html">Conócenos</a></li><li><a href="proyectos.html">Proyectos</a></li><li><a href="resultados.html">Resultados</a></li><li><a href="personas.html">Personas</a></li><li><a href="publicaciones.html">Publicaciones</a></li><li><a href="contacto.html">Contáctanos</a></li></ul>
     </div>
     <div>
       <h4>Contacto</h4>
-      <ul><li>jseslavag@unal.edu.co</li><li>rruedam@unal.edu.co</li><li><a href="https://github.com/DarkSpartan345" target="_blank" rel="noopener">GitHub · DarkSpartan345</a></li></ul>
+      <ul><li><a href="mailto:jseslavag@unal.edu.co">jseslavag@unal.edu.co</a></li><li><a href="mailto:rruedam@unal.edu.co">rruedam@unal.edu.co</a></li><li><a href="https://github.com/ChipLabUN" target="_blank" rel="noopener">GitHub · ChipLabUN</a></li></ul>
     </div>
     <div class="legal"><span>© 2026 ChipLabUN · Universidad Nacional de Colombia</span><span>Herramientas abiertas: Sky130 · OpenLane · TinyTapeout</span></div>
   </div>
@@ -161,11 +206,12 @@ def doc(fname, title, body, full=True):
             f'{head}\n</head>\n<body>\n{inner}</body>\n</html>\n')
 
 # ---------------- páginas ----------------
-STATS = '''<div class="wrap stats-wrap"><div class="stats">
-  <div><b>4</b><span>artículos en 2026</span></div>
+def stats():
+    return f'''<div class="wrap stats-wrap"><div class="stats">
+  <div><b>{len(load_pubs())}</b><span>publicaciones</span></div>
   <div><b>1</b><span>ASIC fabricado y medido</span></div>
   <div><b>2</b><span>líneas de investigación</span></div>
-  <div><b>7</b><span>integrantes</span></div>
+  <div><b>{1 + len(MEMBERS)}</b><span>integrantes</span></div>
 </div></div>'''
 
 LINE1_CHIPS = '''<div class="kv">
@@ -204,15 +250,15 @@ CTA = '''<section class="block"><div class="wrap"><div class="cta">
     <h2>¿Quieres hacer tu posgrado diseñando chips?</h2>
     <p>En ChipLabUN puedes desarrollar tu tesis de maestría o doctorado en exploración de espacios de diseño con aprendizaje por refuerzo, aritmética aproximada, flujos de EDA abiertos y diseño físico de ASIC en Sky130.</p></div>
   <div class="contact">
-    <div><code>jseslavag@unal.edu.co</code><button type="button" data-copy="jseslavag@unal.edu.co">Copiar</button></div>
-    <div><code>rruedam@unal.edu.co</code><button type="button" data-copy="rruedam@unal.edu.co">Copiar</button></div>
+    <div><a class="addr" href="mailto:jseslavag@unal.edu.co?subject=Tesis%20en%20ChipLabUN">jseslavag@unal.edu.co</a><button type="button" data-copy="jseslavag@unal.edu.co">Copiar</button></div>
+    <div><a class="addr" href="mailto:rruedam@unal.edu.co?subject=Tesis%20en%20ChipLabUN">rruedam@unal.edu.co</a><button type="button" data-copy="rruedam@unal.edu.co">Copiar</button></div>
     <small>Departamento de Ingeniería Eléctrica y Electrónica · Facultad de Ingeniería · Sede Bogotá</small>
   </div></div></div></section>'''
 
 MILESTONES = '''<div class="timeline">
   <article class="ms"><time>2026 · OPEN DAY</time><h3>Open Day de Posgrados</h3><p>Presentamos las dos líneas del semillero y abrimos cupos para tesis de maestría y doctorado.</p><a href="contacto.html">Postúlate →</a></article>
-  <article class="ms"><time>2026 · IEEE LASCAS</time><h3>brUNo en el 17th IEEE LASCAS</h3><p>Diseño, implementación y verificación post-silicio del ASIC de escala de grises y Sobel.</p><a href="publicaciones.html">Ver artículo →</a></article>
-  <article class="ms"><time>2026 · ISCMI</time><h3>RL para multiplicadores en ISCMI</h3><p>Exploración del espacio de diseño de multiplicadores digitales potenciada con aprendizaje por refuerzo.</p><a href="publicaciones.html">Ver artículo →</a></article>
+  <article class="ms"><time datetime="2026-02">Feb 2026 · IEEE LASCAS</time><h3>brUNo en el 17th IEEE LASCAS</h3><p>Diseño, implementación y verificación post-silicio del ASIC de escala de grises y Sobel.</p><a href="publicaciones.html#pub-11457090">Ver artículo →</a></article>
+  <article class="ms"><time datetime="2025-11">Nov 2025 · ISCMI</time><h3>RL para multiplicadores en ISCMI</h3><p>Exploración del espacio de diseño de multiplicadores digitales potenciada con aprendizaje por refuerzo.</p><a href="publicaciones.html#pub-11358612">Ver artículo →</a></article>
 </div>'''
 
 def p_index():
@@ -223,13 +269,13 @@ def p_index():
     <h1>Semillero ChipLabUN</h1>
     <p class="tag">IA para diseñar chips · Chips para ejecutar IA</p>
     <p class="lead">Somos el semillero del <strong>Departamento de Ingeniería Eléctrica y Electrónica</strong> de la Universidad Nacional de Colombia, Sede Bogotá. Usamos aprendizaje por refuerzo para descubrir aritmética digital y llevamos funciones de visión por computador al silicio con herramientas de código abierto, del RTL al chip medido.</p>
-    <div class="btns"><a class="btn primary" href="conocenos.html">Conoce el semillero</a><a class="btn ghost" href="proyectos.html">Ver proyectos</a></div>
+    <div class="btns"><a class="btn primary" href="conocenos.html">Conoce el semillero</a><a class="btn ghost" href="contacto.html">Haz tu tesis con nosotros</a></div>
   </div>
   <figure class="die">
     <img src="img/brUNo-die.jpg" alt="Fotografía del die de TinyTapeout de 3,6 por 5,2 mm y detalle del bloque brUNo de 0,226 por 0,161 mm" width="739" height="559">
     <figcaption>Chip brUNo · die TinyTapeout 3,6 × 5,2 mm · bloque 0,226 × 0,161 mm · Sky130</figcaption>
   </figure>
-</div>{STATS}</section>'''
+</div>{stats()}</section>'''
     featured = "".join(project_card(PROJECTS[i]) for i in (0, 3, 4))
     team = f'''<div class="director-feature team-teaser">
   <div class="faces">{faces}</div>
@@ -255,7 +301,7 @@ def p_conocenos():
     <span class="role">Dirección</span>
     <h3>{DIRECTOR["name"]}</h3>
     <p style="color:var(--muted);font-size:15.5px">{DIRECTOR["title"]}</p>
-    <span class="mail">{DIRECTOR["mail"]}</span>
+    {mail(DIRECTOR["mail"])}
   </aside>
 </div>'''
     goals = '''<div class="goal"><h3>Objetivo general</h3><p>Consolidar en la Universidad Nacional de Colombia una capacidad propia de diseño de circuitos integrados que use la inteligencia artificial como herramienta de diseño y que lleve funciones de inteligencia artificial al silicio, con flujos, resultados y publicaciones abiertos y verificables.</p></div>
@@ -322,9 +368,8 @@ def p_resultados():
     return body
 
 def member_card(p):
-    mail = f'<span class="mail">{p["mail"]}</span>' if p["mail"] else ""
     return (f'<article class="member">{photo(p)}<div class="info"><h4>{p["name"]}</h4>'
-            f'<span class="r">{p["role"]}</span>{mail}</div></article>')
+            f'<span class="r">{p["role"]}</span>{mail(p["mail"])}{orcid(p)}</div></article>')
 
 def p_personas():
     d = DIRECTOR
@@ -333,7 +378,7 @@ def p_personas():
   <div><span class="eyebrow">Director del semillero</span>
     <h2>{d["name"]}</h2>
     <p>Ph.D., M.Sc. Profesor del Departamento de Ingeniería Eléctrica y Electrónica de la Facultad de Ingeniería, Universidad Nacional de Colombia, Sede Bogotá. Dirige las dos líneas de ChipLabUN: exploración de aritmética digital con aprendizaje por refuerzo y diseño de ASIC de código abierto.</p>
-    <span class="mail">{d["mail"]}</span></div>
+    <div class="links">{mail(d["mail"])}{orcid(d)}</div></div>
 </div>'''
     l1 = "".join(member_card(p) for p in MEMBERS if p["line"] == "l1")
     l2 = "".join(member_card(p) for p in MEMBERS if p["line"] == "l2")
@@ -351,9 +396,11 @@ def p_publicaciones():
   <button type="button" data-p="all" aria-pressed="true">Todas</button>
   <button type="button" data-p="l1" aria-pressed="false">Línea 1</button>
   <button type="button" data-p="l2" aria-pressed="false">Línea 2</button></div>'''
-    items = "".join(pub_item(p) for p in PUBS)
+    items = "".join(pub_item(p) for p in load_pubs())
     inner = f'''<div class="pubs" id="pubList">{items}</div>
 <div class="profiles">
+  <a href="https://orcid.org/0000-0003-4459-2565" target="_blank" rel="noopener">ORCID · Johan S. Eslava ↗</a>
+  <a href="https://orcid.org/0009-0002-2602-2067" target="_blank" rel="noopener">ORCID · Ronny A. Rueda ↗</a>
   <a href="https://ieeexplore.ieee.org/author/491224199951815" target="_blank" rel="noopener">Perfil de autor en IEEE Xplore ↗</a>
   <a href="https://ieeexplore.ieee.org/author/907075812378910" target="_blank" rel="noopener">Perfil de autor en IEEE Xplore ↗</a>
   <a href="https://github.com/DarkSpartan345" target="_blank" rel="noopener">Código y resultados en GitHub ↗</a>
@@ -362,6 +409,7 @@ def p_publicaciones():
 
 def p_contacto():
     cards = '''<div class="contact-grid">
+  <div class="contact-card"><h3>Qué incluir en tu correo</h3><p>Si buscas maestría o doctorado, la línea que te interesa (IA para diseñar chips o chips que ejecutan IA) y tu hoja de vida adjunta.</p></div>
   <div class="contact-card"><h3>Ubicación</h3><p>Departamento de Ingeniería Eléctrica y Electrónica, Facultad de Ingeniería. Universidad Nacional de Colombia, Sede Bogotá.</p></div>
   <div class="contact-card"><h3>Código abierto</h3><p>El código y los resultados del semillero están en repositorios públicos.</p><a href="https://github.com/DarkSpartan345" target="_blank" rel="noopener">github.com/DarkSpartan345 ↗</a></div>
   <div class="contact-card"><h3>Publicaciones</h3><p>Consulta los artículos del grupo y los perfiles de autor en IEEE Xplore.</p><a href="publicaciones.html">Ver publicaciones →</a></div>
