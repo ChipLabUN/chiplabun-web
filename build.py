@@ -25,7 +25,7 @@ MEMBERS = [
     dict(slug="ronny-rueda", ini="RR", name="Ronny Alberto Rueda Méndez", line="l1",
          role="Exploración de multiplicadores con RL", mail="rruedam@unal.edu.co"),
     dict(slug="juan-caviedes", ini="JC", name="Juan Sebastián Caviedes Bernal", line="l1",
-         role="Exploración multiagente y escalamiento", mail="jcaviedesb@unal.edu.co"),
+         role="Exploración multiagente y escalamiento", mail="jcaviedesb@unal.edu.co", pos="75% center"),
     dict(slug="miguel-alvarado", ini="MA", name="Miguel Ángel Alvarado Senejoa", line="l1",
          role="Línea 1", mail="mialvarados@unal.edu.co"),
     dict(slug="juan-rodriguez", ini="JR", name="Juan David Rodríguez Hernández", line="l1",
@@ -78,8 +78,9 @@ PROJECTS = [
 # ---------------- piezas ----------------
 def photo(p, cls=""):
     line = "l1" if p.get("line") == "l1" else ""
+    pos = f' style="object-position:{p["pos"]}"' if p.get("pos") else ""  # encuadre si la cara no está centrada
     return (f'<div class="photo {line} {cls}"><span class="ini" aria-hidden="true">{p["ini"]}</span>'
-            f'<img src="img/personas/{p["slug"]}.jpg" alt="Foto de {html.escape(p["name"])}" loading="lazy"></div>')
+            f'<img src="img/personas/{p["slug"]}.jpg" alt="Foto de {html.escape(p["name"])}" loading="lazy"{pos}></div>')
 
 def pills(l):
     out = []
